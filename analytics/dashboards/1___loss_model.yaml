@@ -1,0 +1,81 @@
+# A dashboard is a collection of visualizations that are organized into sections.
+# Because they allow filtering and other adjustments, they function as a dynamic presentation layer for your data analytics_model.
+# Read more about dashboards:
+# https://www.gooddata.com/docs/cloud/create-dashboards/concepts/dashboard/
+
+type: dashboard
+id: loss_model_dash
+
+title: 1 - Loss Model
+
+cross_filtering: false
+
+sections:
+  - widgets:
+      - visualization: issues_occured
+        title: Issues occured
+        columns: 2
+        rows: 12
+        date: timestamp
+      - visualization: issues_counted
+        title: Issues counted
+        columns: 2
+        rows: 12
+        date: timestamp
+      - visualization: events_distribution
+        title: false
+        columns: 4
+        rows: 12
+        date: timestamp
+        interactions:
+          - click_on: c8c79f8b3d7d45d09b22e6dc0584617a
+            open_dashboard: loss_model_dash
+  - widgets:
+      - visualization: event_breakdown
+        title: Event Breakdown
+        columns: 12
+        rows: 22
+        date: timestamp
+        interactions:
+          - click_on: fed8a05565c341a88f2175fb63a759a7
+            open_dashboard: loss_model_dash
+      - visualization: loss_model_alternative
+        title: Alternative loss model
+        columns: 12
+        rows: 22
+        date: timestamp
+        interactions:
+          - click_on: 325b720009934ee891657f82fff1e156
+            open_dashboard: loss_model_dash
+  - widgets:
+      - visualization: events_by_time
+        title: Events by time
+        columns: 12
+        rows: 33
+        date: timestamp
+        interactions:
+          - click_on: b8ede5285ba74e73b72cec1b4b0937a3
+            open_visualization: minute_overview
+
+filters:
+  date_month:
+    type: date_filter
+    granularity: MONTH
+    from: -1
+    to: -1
+  8d6df9e91eef4e3ab1c26272b845a9cf:
+    type: attribute_filter
+    using: label/prod_line
+  7772789d463148e496466ecad49b5cb2:
+    type: attribute_filter
+    using: label/event
+  2967354f1bed4a539755fa965afbe1b2:
+    type: attribute_filter
+    using: label/checked_by
+
+permissions:
+  VIEW:
+    all: true
+  EDIT:
+    users:
+      - peter.tomko

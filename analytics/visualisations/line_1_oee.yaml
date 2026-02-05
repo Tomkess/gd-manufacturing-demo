@@ -1,0 +1,41 @@
+# A visualization is a visual representation of a user’s analytical view of the data.
+# You build visualizations from metrics, attributes, and optionally filters that are combined in a way to visualize a particular aspect of your data.
+# The visualizations are executed over and over as fresh data gets loaded.
+# Interpreting the content of a visualization is up to the user (the consumer of the visualization).
+# Read more about visualisations:
+# https://www.gooddata.com/developers/cloud-native/doc/cloud/create-visualizations/concepts/visualization/
+
+type: headline_chart
+id: line1_oee
+
+title: Line 1 OEE
+
+query:
+  fields:
+    faecdf4f4ec84b7fa653f217f7db5de7:
+      title: OEE
+      aggregation: MIN
+      using: fact/current
+    b63fd6e0e8f5498fba31a16651c1a388:
+      title: Target
+      aggregation: MAX
+      using: fact/current
+
+  filter_by:
+    attribute_filter:
+      type: attribute_filter
+      using: label/prod_line
+      state:
+        include:
+          - line A
+
+metrics:
+  - field: faecdf4f4ec84b7fa653f217f7db5de7
+    format: |-
+      [<50][red]#0.0%;
+      [black]#0.0%
+  - field: b63fd6e0e8f5498fba31a16651c1a388
+    format: "#,##0.0%"
+
+config:
+  comparison_enabled: false

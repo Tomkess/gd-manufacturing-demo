@@ -1,0 +1,28 @@
+# A visualization is a visual representation of a user’s analytical view of the data.
+# You build visualizations from metrics, attributes, and optionally filters that are combined in a way to visualize a particular aspect of your data.
+# The visualizations are executed over and over as fresh data gets loaded.
+# Interpreting the content of a visualization is up to the user (the consumer of the visualization).
+# Read more about visualisations:
+# https://www.gooddata.com/developers/cloud-native/doc/cloud/create-visualizations/concepts/visualization/
+
+type: waterfall_chart
+id: loss_model_alternative
+
+title: Alternative loss model
+
+query:
+  fields:
+    1f4a9ece93ca4a5a93dd0aa7a028b3f7: metric/total_duration
+    325b720009934ee891657f82fff1e156: label/event
+
+metrics:
+  - 1f4a9ece93ca4a5a93dd0aa7a028b3f7
+
+view_by:
+  - 325b720009934ee891657f82fff1e156
+
+config:
+  data_labels: true
+  orientation: vertical
+  total_name: Total
+  yaxis_visible: true
