@@ -1,0 +1,100 @@
+name: Production line data pipeline
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_environment:
+        description: "Where to write the data (GitHub Environment)"
+        type: choice
+        required: true
+        options:
+          - dev
+          - test
+          - prod
+      motherduck_schema:
+        description: "Target MotherDuck schema"
+        type: string
+        required: false
+        default: "main"
+      motherduck_database:
+        description: "Target MotherDuck database"
+        type: string
+        required: false
+        default: ""
+      motherduck_table:
+        description: "Target table name"
+        type: string
+        required: false
+        default: "production_line"
+      log_level:
+        description: "Logging verbosity"
+        type: choice
+        required: false
+        default: "INFO"
+        options:
+          - "INFO"
+          - "DEBUG"
+
+permissions:
+  contents: read
+
+jobs:
+  load-to-motherduck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    # Use GitHub Environments to pick the correct secrets for dev/test/prod.
+    # Define environment-scoped secrets:
+    # - MOTHERDUCK_DATABASE
+    # - MOTHERDUCK_TOKEN
+    environment: ${{ inputs.target_environment }}
+
+    env:
+      CSV_URL: "https://raw.githubusercontent.com/kubow/Data_playground/main/output/production_line.csv"
+      # Prefer explicit input, otherwise use environment secret.
+      MOTHERDUCK_DATABASE: ${{ inputs.motherduck_database != '' && inputs.motherduck_database || secrets.MOTHERDUCK_DATABASE }}
+      MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+      MOTHERDUCK_SCHEMA: ${{ inputs.motherduck_schema }}
+      MOTHERDUCK_TABLE: ${{ inputs.motherduck_table }}
+      LOG_LEVEL: ${{ inputs.log_level }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Guard branch vs environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          target="${{ inputs.target_environment }}"
+          branch="${{ github.ref_name }}"
+          if [[ "$target" == "prod" && "$branch" != "master" ]]; then
+            echo "Refusing to run prod pipeline from branch '$branch'. Use branch 'master'." >&2
+            exit 1
+          fi
+          if [[ "$target" == "test" && "$branch" != "test" ]]; then
+            echo "Refusing to run test pipeline from branch '$branch'. Use branch 'test'." >&2
+            exit 1
+          fi
+          if [[ "$target" == "dev" && "$branch" != "dev" ]]; then
+            echo "Refusing to run dev pipeline from branch '$branch'. Use branch 'dev'." >&2
+            exit 1
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r data_pipeline/requirements.txt
+
+      - name: Load CSV into MotherDuck
+        run: |
+          python -m data_pipeline.main \
+            --database "${{ inputs.motherduck_database != '' && inputs.motherduck_database || secrets.MOTHERDUCK_DATABASE }}" \
+            --schema "${{ inputs.motherduck_schema }}" \
+            --table "${{ inputs.motherduck_table }}"
+

@@ -1,0 +1,26 @@
+# A visualization is a visual representation of a user’s analytical view of the data.
+# You build visualizations from metrics, attributes, and optionally filters that are combined in a way to visualize a particular aspect of your data.
+# The visualizations are executed over and over as fresh data gets loaded.
+# Interpreting the content of a visualization is up to the user (the consumer of the visualization).
+# Read more about visualisations:
+# https://www.gooddata.com/developers/cloud-native/doc/cloud/create-visualizations/concepts/visualization/
+
+type: treemap_chart
+id: consumption_distribution
+
+title: Consumption distribution
+
+query:
+  fields:
+    02eeee37e9b34e2d9d958183ec9e2049: metric/total_consumption
+    861071bd559c441dbc3a51f33ae10b7d: label/prod_line
+    6b91dabbc8254feeb74dcebff7b90296: label/checked_by
+
+metrics:
+  - 02eeee37e9b34e2d9d958183ec9e2049
+
+view_by:
+  - 861071bd559c441dbc3a51f33ae10b7d
+
+segment_by:
+  - 6b91dabbc8254feeb74dcebff7b90296

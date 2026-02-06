@@ -1,0 +1,45 @@
+# A dashboard is a collection of visualizations that are organized into sections.
+# Because they allow filtering and other adjustments, they function as a dynamic presentation layer for your data analytics_model.
+# Read more about dashboards:
+# https://www.gooddata.com/docs/cloud/create-dashboards/concepts/dashboard/
+
+type: dashboard
+id: timelines_example
+
+title: 5 - Timelines
+
+sections:
+  - title: Overview
+    widgets:
+      - visualization: timelines_overview
+        title: false
+        columns: 12
+        rows: 12
+        date: timestamp
+      - visualization: more_complex_example
+        title: false
+        columns: 12
+        rows: 22
+        date: timestamp
+      - visualization: consumption_only
+        title: false
+        columns: 12
+        rows: 12
+        date: timestamp
+
+filters:
+  date_month:
+    type: date_filter
+    granularity: MONTH
+    from: -1
+    to: -1
+  f27805daec3a4bf084f6b58af132c213:
+    type: attribute_filter
+    using: label/prod_line
+
+permissions:
+  VIEW:
+    all: true
+  EDIT:
+    users:
+      - peter.tomko

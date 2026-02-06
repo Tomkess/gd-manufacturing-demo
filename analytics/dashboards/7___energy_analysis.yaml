@@ -1,0 +1,52 @@
+# A dashboard is a collection of visualizations that are organized into sections.
+# Because they allow filtering and other adjustments, they function as a dynamic presentation layer for your data analytics_model.
+# Read more about dashboards:
+# https://www.gooddata.com/docs/cloud/create-dashboards/concepts/dashboard/
+
+type: dashboard
+id: energy_analysis
+
+title: 7 - Energy analysis
+
+sections:
+  - title: Total Consumption / kWh
+    widgets:
+      - visualization: total_consumption
+        title: false
+        columns: 12
+        rows: 22
+        date: timestamp
+  - title: Event Counts
+    widgets:
+      - visualization: event_counts
+        title: Event counts
+        columns: 12
+        rows: 22
+        date: timestamp
+  - title: Something different
+    widgets:
+      - visualization: average_resistance
+        title: false
+        columns: 12
+        rows: 22
+        date: timestamp
+
+filters:
+  date_month:
+    type: date_filter
+    granularity: DAY
+    from: -1
+    to: -1
+  971d61ef891d4efd9595d0b011e376c7:
+    type: attribute_filter
+    using: label/prod_line
+  404a73684b8746fb8b33f467e289b756:
+    type: attribute_filter
+    using: label/event
+
+permissions:
+  VIEW:
+    all: true
+  EDIT:
+    users:
+      - peter.tomko

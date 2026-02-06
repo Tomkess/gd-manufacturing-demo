@@ -1,0 +1,63 @@
+# A dataset is a logical object that represents a set of related facts, attributes, and attribute labels.
+# Datasets are basic organization units of a logical data model.
+# Read more about Datasets:
+# https://www.gooddata.com/developers/cloud-native/doc/cloud/model-data/concepts/dataset/
+
+type: dataset
+id: production_line
+
+table_path: main/production_line
+
+title: Production line
+description: Production line
+tags:
+  - Production line
+
+fields:
+  checked_by:
+    type: attribute
+    source_column: checked_by
+    data_type: STRING
+    title: Checked by
+    description: Checked by
+    tags:
+      - Production line
+  event:
+    type: attribute
+    source_column: event
+    data_type: STRING
+    title: Event
+    description: Event
+    tags:
+      - Production line
+  prod_line:
+    type: attribute
+    source_column: prod_line
+    data_type: STRING
+    title: Prod line
+    description: Prod line
+    tags:
+      - Production line
+  current:
+    type: fact
+    source_column: current
+    data_type: NUMERIC
+    title: Current
+    description: Current
+    tags:
+      - Production line
+  voltage:
+    type: fact
+    source_column: voltage
+    data_type: NUMERIC
+    title: Voltage
+    description: Voltage
+    tags:
+      - Production line
+
+references:
+  - dataset: timestamp
+    sources:
+      - source_column: timestamp
+        data_type: TIMESTAMP
+        target: timestamp
