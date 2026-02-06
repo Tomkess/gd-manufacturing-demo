@@ -117,6 +117,7 @@ def main() -> int:
     _setup_logging()
     try:
         settings = parse_args(sys.argv[1:])
+
         # Ensure env-based validation message is actionable.
         get_motherduck_token()
         get_motherduck_database()
