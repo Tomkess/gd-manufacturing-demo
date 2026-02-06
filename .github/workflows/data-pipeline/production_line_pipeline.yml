@@ -1,4 +1,4 @@
-name: Production Line -> Data Ingestion Pipeline
+name: Production Line -> Data Ingestion Pipeline (MotherDuck)
 
 on:
   workflow_dispatch:
@@ -41,7 +41,7 @@ permissions:
 jobs:
   load-to-motherduck:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 5
 
     # Use GitHub Environments to pick the correct secrets for dev/test/prod.
     # Define environment-scoped secrets:
@@ -51,7 +51,6 @@ jobs:
 
     env:
       CSV_URL: "https://raw.githubusercontent.com/kubow/Data_playground/main/output/production_line.csv"
-      # Prefer explicit input, otherwise use environment secret.
       MOTHERDUCK_DATABASE: ${{ inputs.motherduck_database != '' && inputs.motherduck_database || secrets.MOTHERDUCK_DATABASE }}
       MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
       MOTHERDUCK_SCHEMA: ${{ inputs.motherduck_schema }}
