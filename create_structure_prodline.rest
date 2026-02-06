@@ -1,0 +1,114 @@
+# 1 ------DATA SOURCES-------------------
+
+# !!! put here your dat source identifier and worksapce
+@host={{GOODDATA_HOST}}
+@token={{GOODDATA_TOKEN}}
+@motherduck_url={{MOTHERDUCK_URL}}
+@motherduck_token={{MOTHERDUCK_TOKEN}}
+@motherduck_user={{MOTHERDUCK_USER}}
+@ds_id={{DATASOURCE_ID}}
+@ws_id={{WORKSPACE_ID}}
+
+### Create data connection
+# Snowflake data connection details found publicly at
+# https://www.gooddata.com/developers/cloud-native/doc/cloud/getting-started/connect-data/#ConnectData-SampleDatabase
+POST {{host}}/api/v1/entities/dataSources
+Content-Type: application/vnd.gooddata.api+json
+Authorization: Bearer {{token}}
+
+{
+  "data": {
+    "id": "{{ds_id}}",
+    "type": "dataSource",
+    "attributes": {
+      "name": "MotherDuck Example",
+      "type": "MOTHERDUCK",
+      "url": "{{motherduck_url}}",
+      "token": "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmxiV0ZwYkNJNkluQmxkR1Z5TG5SdmJXdHZRR2R2YjJSa1lYUmhMbU52YlNJc0luTmxjM05wYjI0aU9pSndaWFJsY2k1MGIyMXJieTVuYjI5a1pHRjBZUzVqYjIwaUxDSndZWFFpT2lKM1FVeExNVE5xVlRkMFNGaHFka1ZqV2pGemRHSm9VREY2TlVjNVduTlFkR3BGV0dnMlYyTkJNbkJ6SWl3aWRYTmxja2xrSWpvaVptRTVPRGMwT0RJdE5tVXdNeTAwTldWaUxUZzVOREV0T1RVMVlXTXdaalJsWXpsaElpd2lhWE56SWpvaWJXUmZjR0YwSWl3aWNtVmhaRTl1YkhraU9tWmhiSE5sTENKMGIydGxibFI1Y0dVaU9pSnlaV0ZrWDNkeWFYUmxJaXdpYVdGMElqb3hOelEzTWpJNU5UY3dmUS51SUtaSlpabTV2MUJ6U3RLMURwY01CSXoxUGtvUWJEWDhCTEM4bGZmNFVB",
+      "schema": "main"
+    }
+  }
+}
+
+
+### Get the data connection
+GET {{host}}/api/v1/entities/dataSources/{{ds_id}}
+Content-Type: application/vnd.go
+Authorization: Bearer {{token}}
+
+
+### Delete data connection
+DELETE {{host}}/api/v1/entities/dataSources/{{ds_id}}
+Content-Type: application/vnd.go
+Authorization: Bearer {{token}}
+
+### List all data connections
+GET {{host}}/api/v1/layout/dataSources
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+# 2 ------ WORKSPACES -------------------
+### GET workspace
+GET {{host}}/api/v1/layout/workspaces
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Create a new workspace
+POST {{host}}/api/v1/entities/workspaces/
+Content-Type: application/vnd.gooddata.api+json
+Authorization: Bearer {{token}}
+
+{
+    "data": {
+        "id": "{{ws_id}}",
+        "type": "workspace",
+        "attributes": {
+            "name": "Production line",
+            "description": "sample content displays artificial data"
+        }
+    }
+}
+
+### Restore the Workspace Content
+# Rather do that in CLI interface
+
+PUT {{host}}/api/v1/layout/workspaces/{{ws_id}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+< ./workspaceAnalytics.json
+
+
+# https://www.gooddata.com/developers/cloud-native/doc/cloud/manage-organization/manage-permissions/set-permissions-for-workspace/
+
+
+### Get Workspace permissions
+GET {{host}}/api/v1/layout/workspaces/{{ws_id}}/permissions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Get Dashboards
+GET {{host}}/api/v1/entities/workspaces/{{ws_id}}/analyticalDashboards
+Content-Type: application/vnd.gooddata.api+json
+Authorization: Bearer {{token}}
+
+
+### Get Dashboard assignees
+GET {{host}}/api/v1/actions/workspaces/{{ws_id}}/analyticalDashboards/45cd8af6-e20d-4e21-8eca-63599bc74714/availableAssignees
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+
+### Get Dashboard permissions
+GET {{host}}/api/v1/actions/workspaces/{{ws_id}}/analyticalDashboards/45cd8af6-e20d-4e21-8eca-63599bc74714/permissions
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### Get Workspaces
+GET {{host}}/api/v1/entities/workspaces
+Content-Type: application/vnd.gooddata.api+json
+Authorization: Bearer {{token}}

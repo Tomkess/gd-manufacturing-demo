@@ -1,0 +1,30 @@
+# A dashboard is a collection of visualizations that are organized into sections.
+# Because they allow filtering and other adjustments, they function as a dynamic presentation layer for your data analytics_model.
+# Read more about dashboards:
+# https://www.gooddata.com/docs/cloud/create-dashboards/concepts/dashboard/
+
+type: dashboard
+id: distribution_overview
+
+title: 3 - Distribution graph
+
+sections:
+  - widgets:
+      - visualization: consumption_distribution
+        title: Consumption distribution
+        columns: 12
+        rows: 33
+        date: timestamp
+  - widgets:
+      - visualization: resistance_duration
+        title: Resistance vs duration
+        columns: 12
+        rows: 23
+        date: timestamp
+
+permissions:
+  VIEW:
+    all: true
+  EDIT:
+    users:
+      - peter.tomko

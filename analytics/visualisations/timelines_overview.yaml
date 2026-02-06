@@ -1,0 +1,37 @@
+# A visualization is a visual representation of a user’s analytical view of the data.
+# You build visualizations from metrics, attributes, and optionally filters that are combined in a way to visualize a particular aspect of your data.
+# The visualizations are executed over and over as fresh data gets loaded.
+# Interpreting the content of a visualization is up to the user (the consumer of the visualization).
+# Read more about visualisations:
+# https://www.gooddata.com/developers/cloud-native/doc/cloud/create-visualizations/concepts/visualization/
+
+type: repeater_chart
+id: timelines_overview
+
+title: Timelines overview
+
+query:
+  fields:
+    cf3eacf9668947adb902a555bdc31b22: label/prod_line
+    8f96978d2d11430eb81a41aabb6d3003: label/prod_line
+    38d68919248441a5a02bcd9d39a7102f: metric/average_reistance
+    8b74a62f1e3e4f00804e7992499c2d26: metric/total_consumption
+    297c5cb73c8345a088d16a0d5e48f415:
+      aggregation: AVG
+      using: fact/voltage
+    85c85ef5becb4fef8eccf38038ac80eb: label/timestamp.day
+
+metrics:
+  - 8f96978d2d11430eb81a41aabb6d3003
+  - field: 38d68919248441a5a02bcd9d39a7102f
+    display_as: column
+  - field: 8b74a62f1e3e4f00804e7992499c2d26
+    display_as: line
+  - field: 297c5cb73c8345a088d16a0d5e48f415
+    format: "#,##0.00"
+
+view_by:
+  - 85c85ef5becb4fef8eccf38038ac80eb
+
+segment_by:
+  - cf3eacf9668947adb902a555bdc31b22
