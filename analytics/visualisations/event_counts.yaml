@@ -1,0 +1,34 @@
+# A visualization is a visual representation of a user’s analytical view of the data.
+# You build visualizations from metrics, attributes, and optionally filters that are combined in a way to visualize a particular aspect of your data.
+# The visualizations are executed over and over as fresh data gets loaded.
+# Interpreting the content of a visualization is up to the user (the consumer of the visualization).
+# Read more about visualisations:
+# https://www.gooddata.com/developers/cloud-native/doc/cloud/create-visualizations/concepts/visualization/
+
+type: column_chart
+id: event_counts
+
+title: Event counts
+
+query:
+  fields:
+    0525b2f5c134494eb2e2230d2d85f265: metric/total_events
+    e20089eb8e2242a38a138ac8ca7770c1: label/timestamp.hour
+    8e2fc8826e37420bb25641966b8914c6: label/event
+
+  filter_by:
+    date_month:
+      type: date_filter
+      granularity: QUARTER
+      from: -3
+      to: 0
+      using: timestamp
+
+metrics:
+  - 0525b2f5c134494eb2e2230d2d85f265
+
+view_by:
+  - e20089eb8e2242a38a138ac8ca7770c1
+
+segment_by:
+  - 8e2fc8826e37420bb25641966b8914c6

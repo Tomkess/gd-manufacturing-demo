@@ -1,0 +1,8 @@
+profiles:
+  dev:
+    host: $GOODDATA_HOST
+    token: $GOODDATA_TOKEN
+    workspace_id: Manufacturing
+    data_source: production_line
+source_dir: analytics
+default_profile: dev
