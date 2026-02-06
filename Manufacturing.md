@@ -5,7 +5,7 @@ example dataset to deploy:
 - available as [github raw csv file](https://raw.githubusercontent.com/kubow/Data_playground/main/output/production_line.csv)
 - Motherduck can speed up processing by runing below query:
 ```sql
-CREATE OR REPLACE TABLE orders AS
+CREATE OR REPLACE TABLE production_line AS
       FROM READ_CSV_AUTO('https://raw.githubusercontent.com/kubow/Data_playground/main/output/production_line.csv', header=True)
 ```
 - you can then create data connection and an empty workspace using the REST file or manually (update in `gooddata.yaml` and `.env` files accordingly)
@@ -15,6 +15,48 @@ gd validate
 gd deploy
 ```
 - alternatively you can directly upload the csv file to gooddata cloud
+
+## Automated pipeline (GitHub Actions)
+
+This repo includes a simple pipeline that refreshes the MotherDuck table used by the demo LDM (`main/production_line`).
+
+- **Workflow**: `.github/workflows/production_line_pipeline.yml`
+- **Loader script**: `data_pipeline/main.py`
+
+### Required GitHub secrets
+
+The workflow is **manual** and lets you select where to load data: **dev / test / prod**.
+
+It uses **GitHub Environments** to pick the right credentials for the selected target.
+
+1. Create GitHub environments named: `dev`, `test`, `prod`
+2. In each environment, set secrets:
+   - `MOTHERDUCK_DATABASE` (example `production_line`)
+   - `MOTHERDUCK_TOKEN` (raw token, JWT-like)
+
+When triggering the workflow, you can also override:
+- the target schema (defaults to `main`)
+- the target MotherDuck database (defaults to the environment secret)
+
+The workflow also enforces branch ↔ environment mapping:
+- `dev` runs only from branch `dev`
+- `test` runs only from branch `test`
+- `prod` runs only from branch `master`
+
+If you need a base64-encoded token (e.g. for datasource setup), derive it locally from the raw token:
+
+```shell
+python3 -c "from utils.motherduck import get_motherduck_token_b64; print(get_motherduck_token_b64())"
+```
+
+### Run locally
+
+```shell
+python -m pip install -r data_pipeline/requirements.txt
+export MOTHERDUCK_DATABASE="production_line"
+export MOTHERDUCK_TOKEN="..."
+python -m data_pipeline.main
+```
 
 ## Free datasets available
 
